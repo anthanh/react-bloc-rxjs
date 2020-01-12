@@ -4,12 +4,17 @@ import { useState, useEffect } from "react";
 import { tag } from "rxjs-spy/operators";
 import { map, take } from "rxjs/operators";
 
+// Product Business Logic Object Component
 class ProductBloc {
+  // internal state
   state = {
     products: []
   };
 
-  stream = new Subject().pipe(tag("products.bloc.state"));
+  stream = new Subject().pipe(
+    // rxjs debug
+    tag("products.bloc.state")
+  );
 
   dispose() {
     this.stream.unsubscribe();
@@ -21,7 +26,7 @@ class ProductBloc {
     this.stream.next(this.state);
   };
 
-  // calls API and change state with result
+  // async state mutations
   fetchProducts = page => {
     return getProducts(0)
       .pipe(take(1))
@@ -32,18 +37,17 @@ class ProductBloc {
   selectProducts = state => state.products;
 
   // hook version
-  useProductsBloc = (selector) => {
+  useProductsBloc = selector => {
     const [value, setValue] = useState([]);
 
     useEffect(() => {
       this.stream.pipe(map(selector)).subscribe(setValue);
       return () => {
-        this.stream.unsubscribe()
-      }
+        this.stream.unsubscribe();
+      };
     }, []);
     return value;
   };
-
 }
 
 export default new ProductBloc();

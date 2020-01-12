@@ -1,7 +1,5 @@
 import React from "react";
 
-function Basket() {
+export default function Basket() {
   return <p>Basket</p>;
 }
-
-export default Basket;

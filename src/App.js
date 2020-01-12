@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import './App.css';
-import Header from "./modules/layout/Header";
-import Products from "./modules/products";
-import Checkout from "./modules/checkout";
-import Basket from "./modules/basket";
+import { Header } from "./modules/layout";
+import { Products } from "./modules/products";
+import { Checkout } from "./modules/checkout";
+import { Basket } from "./modules/basket";
 
 function App() {
   return (

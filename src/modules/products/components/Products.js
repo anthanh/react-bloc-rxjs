@@ -6,7 +6,7 @@ export default function Products() {
   useEffect(() => {
     productsBloc.fetchProducts(0);
   }, []);
-  
+
   // get latest products from bloc state as hook state
   const products = productsBloc.useProductsBloc(productsBloc.selectProducts);
 

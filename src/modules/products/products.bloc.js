@@ -2,7 +2,7 @@ import { Subject } from "rxjs";
 import { getProducts } from "./product.service";
 import { useState, useEffect } from "react";
 import { tag } from "rxjs-spy/operators";
-import { map, take } from "rxjs/operators";
+import { map, take, takeUntil } from "rxjs/operators";
 
 // Product Business Logic Object Component
 class ProductBloc {
@@ -38,12 +38,16 @@ class ProductBloc {
 
   // hook version
   useProductsBloc = selector => {
+    const unsubscribe$ = new Subject();
     const [value, setValue] = useState([]);
 
     useEffect(() => {
-      this.stream.pipe(map(selector)).subscribe(setValue);
+      this.stream
+        .pipe(map(selector), takeUntil(unsubscribe$))
+        .subscribe(setValue);
       return () => {
-        this.stream.unsubscribe();
+        unsubscribe$.next();
+        unsubscribe$.complete();
       };
     }, []);
     return value;

@@ -1,11 +1,11 @@
 import { Subject } from "rxjs";
-import { shareReplay } from "rxjs/operators";
 import { generateProducts } from "./products.mock";
 
+const subject = new Subject();
 export function getProducts(page) {
-  const subject = new Subject().pipe(shareReplay(1));
   setTimeout(() => {
     subject.next(generateProducts());
+    subject.complete();
   }, 1000);
   return subject;
 }

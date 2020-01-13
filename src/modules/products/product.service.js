@@ -1,8 +1,8 @@
 import { Subject } from "rxjs";
 import { generateProducts } from "./products.mock";
 
-const subject = new Subject();
 export function getProducts(page) {
+  const subject = new Subject();
   setTimeout(() => {
     subject.next(generateProducts());
     subject.complete();

@@ -1,4 +1,4 @@
-import { Subject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 import { getProducts } from "./product.service";
 import { useState, useEffect } from "react";
 import { tag } from "rxjs-spy/operators";
@@ -8,10 +8,11 @@ import { map, take, takeUntil } from "rxjs/operators";
 class ProductBloc {
   // internal state
   state = {
+    loading: false,
     products: []
   };
 
-  stream = new Subject().pipe(
+  stream = new BehaviorSubject(this.state).pipe(
     // rxjs debug
     tag("products.bloc.state")
   );
@@ -23,11 +24,14 @@ class ProductBloc {
   // only setters can update state an trigger changes
   setProducts = products => {
     this.state.products = [...products];
+    this.state.loading = false;
     this.stream.next(this.state);
   };
 
   // async state mutations
   fetchProducts = page => {
+    this.state.loading = true;
+    this.stream.next(this.state);
     return getProducts(0)
       .pipe(take(1))
       .subscribe(this.setProducts);
@@ -35,11 +39,12 @@ class ProductBloc {
 
   // state selectors
   selectProducts = state => state.products;
+  selectIsLoading = state => state.loading;
 
   // hook version
-  useProductsBloc = selector => {
+  useProductsBloc = (selector, initialValue = null) => {
     const unsubscribe$ = new Subject();
-    const [value, setValue] = useState([]);
+    const [value, setValue] = useState(initialValue);
 
     useEffect(() => {
       this.stream

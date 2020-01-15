@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
-import productsBloc from "../products.bloc";
+import productsExtendedBloc from "../products.extended.bloc";
 
-export default function Products() {
+export default function ProductsExtended() {
   // trigger bloc async state mutation
   useEffect(() => {
-    productsBloc.fetchProducts(0);
+    productsExtendedBloc.actions.fetchProducts(0);
   }, []);
 
   // get latest products from bloc state as hook state
-  const products = productsBloc.useProductsBloc(productsBloc.selectProducts, []);
-  const isLoading = productsBloc.useProductsBloc(productsBloc.selectIsLoading, false);
+  const products = productsExtendedBloc.useBloc(productsExtendedBloc.selectProducts, []);
+  const isLoading = productsExtendedBloc.useBloc(productsExtendedBloc.selectIsLoading, false);
 
   // useEffect(() => {
   //   console.log('render', products)

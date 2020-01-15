@@ -1,5 +1,7 @@
 import React from "react";
+import { routerBloc } from "../../core";
 
 export default function Basket() {
-  return <p>Basket</p>;
+  const location = routerBloc.useBloc(routerBloc.selectLocation, null);
+  return <p>Basket ({JSON.stringify(location)})</p>;
 }

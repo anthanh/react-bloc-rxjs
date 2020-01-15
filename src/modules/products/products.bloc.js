@@ -17,7 +17,7 @@ class ProductBloc {
     tag("products.bloc.state")
   );
 
-  dispose() {
+  destroy() {
     this.stream.unsubscribe();
   }
 
@@ -54,6 +54,7 @@ class ProductBloc {
         unsubscribe$.next();
         unsubscribe$.complete();
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return value;
   };
